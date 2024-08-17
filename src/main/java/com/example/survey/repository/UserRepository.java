@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -36,6 +37,8 @@ public class UserRepository {
     public void deleteUser (User user){
         em.remove(user);
     }
+
+
 
 
 

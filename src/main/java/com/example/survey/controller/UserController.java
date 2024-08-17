@@ -8,6 +8,7 @@ import com.example.survey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -37,6 +38,12 @@ public class UserController {
     public User updateUser (@RequestParam UUID id, @RequestBody UserUpdateParameter userUpdateParameter){
         User user = service.updateUser(id, userUpdateParameter);
         return user;
+    }
+
+    @GetMapping("/user/bySurvey")  // получаем всех юзеров по одному ответевшему опроснику
+    public List<User> getUsersByAnsweredSurvey (@RequestParam UUID surveyId){
+        List<User> users = service.getUsersByAnsweredSurvey(surveyId);
+        return users;
     }
 
 }

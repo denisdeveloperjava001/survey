@@ -1,14 +1,16 @@
 package com.example.survey.service;
 
 import com.example.survey.controller.UserController;
-import com.example.survey.model.User;
-import com.example.survey.model.UserCreateParameter;
-import com.example.survey.model.UserUpdateParameter;
+import com.example.survey.model.*;
+import com.example.survey.repository.AnsweredSurveyRepository;
+import com.example.survey.repository.SurveyRepository;
 import com.example.survey.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -16,6 +18,13 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private SurveyRepository surveyRepository;
+
+    @Autowired
+    private AnsweredSurveyRepository answeredSurveyRepository;
+
 
     public User createUser(UserCreateParameter createParameter) {
         User user = new User();
@@ -53,6 +62,15 @@ public class UserService {
         repository.saveUser(user);
 
         return user;
+    }
+
+    public List<User> getUsersByAnsweredSurvey (UUID surveyId){
+
+        Survey survey = surveyRepository.getSurvey(surveyId);
+        List<AnsweredSurvey> answeredSurveys = answeredSurveyRepository.getUsersByAnsweredSurvey(survey);
+        List<User> users = answeredSurveys.stream().map(AnsweredSurvey::getUser).toList();
+
+        return users;
     }
 
 }
