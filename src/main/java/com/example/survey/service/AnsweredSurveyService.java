@@ -4,10 +4,13 @@ import com.example.survey.model.AnsweredSurvey;
 import com.example.survey.model.AnsweredSurveyCreateParameter;
 import com.example.survey.model.Survey;
 import com.example.survey.model.User;
-import com.example.survey.repository.AnsweredSurveyRepository;
-import com.example.survey.repository.SurveyRepository;
-import com.example.survey.repository.UserRepository;
+import com.example.survey.repository.*;
+import com.example.survey.validation.AnsweredSurveyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,41 +20,49 @@ import java.util.UUID;
 public class AnsweredSurveyService {
 
     @Autowired
-    private AnsweredSurveyRepository repository;
-
+    private AnsweredSurveyJpaRepository answeredSurveyJpaRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
     @Autowired
-    private SurveyRepository surveyRepository;
+    private SurveyJpaRepository surveyJpaRepository;
+
+    @Autowired AnsweredSurveyValidator validation;
 
 
-    public AnsweredSurvey createAnsweredSurvey (AnsweredSurveyCreateParameter createParameter){
 
-        Survey survey = surveyRepository.getSurvey(createParameter.getSurveyId());
+    public AnsweredSurvey saveAnsweredSurvey (AnsweredSurveyCreateParameter createParameter){
+        validation.validateOnCreation(createParameter);
+
+        User user = userJpaRepository.findById(createParameter.getUserId()).get();
+        Survey survey = surveyJpaRepository.findById(createParameter.getSurveyId()).get();
 
         AnsweredSurvey answeredSurvey = new AnsweredSurvey();
-        answeredSurvey.setUser(userRepository.getUser(createParameter.getUserId()));
+        answeredSurvey.setUser(user);
         answeredSurvey.setSurvey(survey);
         answeredSurvey.setAnswers(createParameter.getAnswers());
 
-        repository.saveAnsweredSurvey(answeredSurvey);
+        answeredSurveyJpaRepository.save(answeredSurvey);
 
-        survey.setRespondentsCount(survey.getRespondentsCount() + 1); // повышаем счётчик количества юзеров ответивших на данный отпросник
-        surveyRepository.saveSurvey(survey);
+        survey.setRespondentsCount(survey.getRespondentsCount() +1);
+        surveyJpaRepository.save(survey);
 
-        return answeredSurvey;
+         return answeredSurvey;
+
     }
 
     public AnsweredSurvey getAnsweredSurvey (UUID userId, UUID surveyId){
-        User user = userRepository.getUser(userId);
-        Survey survey = surveyRepository.getSurvey(surveyId);
-        AnsweredSurvey answeredSurvey = repository.getAnsweredSurvey(user, survey);
+
+        AnsweredSurvey answeredSurvey = answeredSurveyJpaRepository.findById(new AnsweredSurvey.CompositeKey(userId,surveyId)).get();
         return answeredSurvey;
     }
 
-    public List<AnsweredSurvey> getByUserId (UUID userId){
-        User user = userRepository.getUser(userId);
-        List<AnsweredSurvey> answeredSurveys = repository.getByUserId(user);
+
+    public Page<AnsweredSurvey> getByUserId(UUID userId, int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<AnsweredSurvey> answeredSurveys = answeredSurveyJpaRepository.findAllByUserId(userId,pageable);
         return answeredSurveys;
     }
+
+
+
 }

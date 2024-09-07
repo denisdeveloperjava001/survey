@@ -1,12 +1,17 @@
 package com.example.survey.controller;
 
 
-import com.example.survey.model.AnsweredSurvey;
-import com.example.survey.model.AnsweredSurveyCreateParameter;
-import com.example.survey.model.Survey;
+import com.example.survey.converter.AnsweredSurveyConverter;
+import com.example.survey.converter.SurveyConverter;
+import com.example.survey.model.*;
+import com.example.survey.repository.AnsweredSurveyJpaRepository;
 import com.example.survey.service.AnsweredSurveyService;
 import com.example.survey.service.AnsweredSurveyService;
+import com.example.survey.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,28 +22,36 @@ public class AnsweredSurveyController {
 
     @Autowired
     private AnsweredSurveyService service;
+    @Autowired
+    private JWTService jwtService;
+
 
     @PostMapping("/answeredSurvey")
-    public AnsweredSurvey createAnsweredSurvey (@RequestBody AnsweredSurveyCreateParameter createParameter) {
-        AnsweredSurvey answeredSurvey = service.createAnsweredSurvey(createParameter);
-        return answeredSurvey;
+    public AnsweredSurveyDto createAnsweredSurvey (@RequestHeader("Authorization") String token,@RequestBody AnsweredSurveyCreationParameterDto answeredSurveyCreationParameterDto) {
+        jwtService.validationJWT(token, answeredSurveyCreationParameterDto.getUserId());
+        AnsweredSurveyCreateParameter answeredSurveyCreateParameter = AnsweredSurveyConverter.toEntity(answeredSurveyCreationParameterDto);
+        AnsweredSurvey answeredSurvey = service.saveAnsweredSurvey(answeredSurveyCreateParameter);
+        AnsweredSurveyDto answeredSurveyDto = AnsweredSurveyConverter.toDto(answeredSurvey);
+
+        return answeredSurveyDto;
     }
 
     @GetMapping("/answeredSurvey")
-    public AnsweredSurvey getAnsweredSurvey (@RequestParam UUID userId, @RequestParam UUID surveyId){
+    public AnsweredSurveyDto getAnsweredSurvey (@RequestParam UUID userId, @RequestParam UUID surveyId){
          AnsweredSurvey answeredSurvey = service.getAnsweredSurvey(userId,surveyId);
-        return answeredSurvey;
+         AnsweredSurveyDto answeredSurveyDto = AnsweredSurveyConverter.toDto(answeredSurvey);
+        return answeredSurveyDto;
     }
 
     @GetMapping("/answeredSurvey/getByUserId")  //получить все отвеченные опросники по одному пользователю
-    public List<AnsweredSurvey> getByUserId (@RequestParam UUID userId) {
-        List<AnsweredSurvey> answeredSurveys = service.getByUserId(userId);
-        return answeredSurveys;
+    public Page<AnsweredSurveyDto> getByUserId (
+            @RequestParam UUID userId,
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        Page<AnsweredSurvey> answeredSurveys = service.getByUserId(userId, pageNo, pageSize);
+        Page<AnsweredSurveyDto> answeredSurveysDto = answeredSurveys.map(AnsweredSurveyConverter::toDto);
+
+        return answeredSurveysDto;
     }
-
-
-
-
-
 
 }

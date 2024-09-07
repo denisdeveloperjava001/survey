@@ -12,11 +12,11 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SurveyCreateParameter {
+public class SurveyCreateParameterDto {
 
     private UUID ownerId;
 
     private String title;
 
-    private ArrayList<String> questions = new ArrayList<>();
+    private ArrayList<String> questions;
 }

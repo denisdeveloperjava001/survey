@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCreateParameter {
+public class RegistrationParameter {
     private String name;
     private int age;
     private String gender;

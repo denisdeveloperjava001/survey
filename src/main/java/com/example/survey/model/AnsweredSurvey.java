@@ -1,14 +1,14 @@
 package com.example.survey.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "answered_survey")
+@IdClass(AnsweredSurvey.CompositeKey.class)
 public class AnsweredSurvey {
 
     @Id
@@ -31,5 +32,15 @@ public class AnsweredSurvey {
     /** @noinspection JpaAttributeTypeInspection*/
     @JdbcTypeCode(SqlTypes.JSON)
     private List<String> answers;
+
+    @Setter
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class CompositeKey implements Serializable {
+        private UUID user;
+        private UUID survey;
+    }
 
 }

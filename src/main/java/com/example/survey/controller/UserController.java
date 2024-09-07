@@ -1,11 +1,15 @@
 package com.example.survey.controller;
 
 import com.example.survey.SurveyApplication;
-import com.example.survey.model.User;
-import com.example.survey.model.UserCreateParameter;
-import com.example.survey.model.UserUpdateParameter;
+import com.example.survey.converter.UserConverter;
+import com.example.survey.model.*;
+import com.example.survey.service.JWTService;
 import com.example.survey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,34 +20,40 @@ public class UserController {
 
     @Autowired
     private UserService service;
+    @Autowired JWTService jwtService;
 
-    @PostMapping("/user")
-    public User createUser (@RequestBody UserCreateParameter createParameter) {
-        User user = service.createUser(createParameter);
-        return user;
-    }
 
     @GetMapping("/user")
-    public User getUser (@RequestParam UUID id){
+    public UserDto getUser (@RequestParam UUID id){
         User user = service.getUser(id);
-        return user;
+        UserDto userDto = UserConverter.toDto(user);
+        return userDto;
     }
 
     @DeleteMapping("/user")
-    public void deleteUser (@RequestParam UUID id){
-       service.deleteUser(id);
+    public void deleteUser (@RequestHeader("Authorization") String token,@RequestParam UUID id){
+        jwtService.validationJWT(token, id);
+
+        service.deleteUser(id);
     }
 
     @PutMapping("/user")
-    public User updateUser (@RequestParam UUID id, @RequestBody UserUpdateParameter userUpdateParameter){
+    public UserDto updateUser (@RequestHeader("Authorization") String token, @RequestParam UUID id, @RequestBody UserUpdateParameterDto userUpdateParameterDto){
+        jwtService.validationJWT(token, id);
+        UserUpdateParameter userUpdateParameter = UserConverter.toEntity(userUpdateParameterDto);
         User user = service.updateUser(id, userUpdateParameter);
-        return user;
+        UserDto userDto = UserConverter.toDto(user);
+        return userDto;
     }
 
     @GetMapping("/user/bySurvey")  // получаем всех юзеров по одному ответевшему опроснику
-    public List<User> getUsersByAnsweredSurvey (@RequestParam UUID surveyId){
-        List<User> users = service.getUsersByAnsweredSurvey(surveyId);
-        return users;
+    public Page<UserDto> getUsersByAnsweredSurvey (
+            @RequestParam UUID surveyId,
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        Page<User> users = service.getUsersByAnsweredSurvey(surveyId,pageNo,pageSize);
+        Page<UserDto> usersDto = users.map(UserConverter::toDto);
+        return usersDto;
     }
 
 }

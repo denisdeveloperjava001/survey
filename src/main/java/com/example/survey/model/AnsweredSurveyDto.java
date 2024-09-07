@@ -5,18 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
+import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SurveyCreateParameter {
 
-    private UUID ownerId;
-
-    private String title;
-
-    private ArrayList<String> questions = new ArrayList<>();
+public class AnsweredSurveyDto {
+    private UserDto user;
+    private SurveyDto survey;
+    private List<String> answers;
 }
