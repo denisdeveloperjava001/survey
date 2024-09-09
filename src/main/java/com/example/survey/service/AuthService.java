@@ -24,7 +24,6 @@ public class AuthService {
         public RegistrationResponse registration (RegistrationParameter registrationParameter) {
         userValidator.validateOnCreation(registrationParameter);
 
-
         User user = new User();
         user.setName(registrationParameter.getName());
         user.setAge(registrationParameter.getAge());

@@ -1,6 +1,8 @@
 package com.example.survey.service;
 
 import com.example.survey.model.UserDto;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -33,19 +35,28 @@ public class JWTService {
 
     public void validationJWT (String token, UUID userId) {
         token = token.replace("Bearer ", "");
+
         byte[] keyBytes = Decoders.BASE64.decode("servicesecretkeyservicesecretkeyservicesecretkey");
         SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
 
-        boolean isValid = Jwts.parser()
+        Claims payload = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
-                .getPayload()
+                .getPayload();
+
+        boolean isValidUser = payload
                 .get("id", String.class)
                 .equals(userId.toString());
 
-        if(!isValid){
+        boolean isActive = payload
+                .getExpiration()
+                .after(new Date());
+
+        if(!isValidUser || !isActive) {
             throw new RuntimeException("ошибка авторизации");
         }
+
     }
+
 }

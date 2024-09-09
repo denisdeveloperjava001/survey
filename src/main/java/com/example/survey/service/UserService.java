@@ -39,6 +39,9 @@ public class UserService {
     }
 
     public User updateUser (UUID id, UserUpdateParameter userUpdateParameter) {
+
+        userValidator.validateOnUpdate(id, userUpdateParameter);
+
         User user = userJpaRepository.findById(id).get();
 
         user.setName(userUpdateParameter.getName());

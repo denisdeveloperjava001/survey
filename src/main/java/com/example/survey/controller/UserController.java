@@ -40,6 +40,7 @@ public class UserController {
     @PutMapping("/user")
     public UserDto updateUser (@RequestHeader("Authorization") String token, @RequestParam UUID id, @RequestBody UserUpdateParameterDto userUpdateParameterDto){
         jwtService.validationJWT(token, id);
+
         UserUpdateParameter userUpdateParameter = UserConverter.toEntity(userUpdateParameterDto);
         User user = service.updateUser(id, userUpdateParameter);
         UserDto userDto = UserConverter.toDto(user);
