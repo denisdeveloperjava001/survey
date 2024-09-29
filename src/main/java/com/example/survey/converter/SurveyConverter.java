@@ -1,15 +1,10 @@
 package com.example.survey.converter;
 
-import com.example.survey.controller.SurveyController;
 import com.example.survey.model.*;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import com.example.survey.model.type_of_question.TypeOfQuestion;
+import com.example.survey.model.type_of_question.TypeOfQuestionDto;
 
-import java.time.OffsetDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SurveyConverter {
 
@@ -20,7 +15,12 @@ public class SurveyConverter {
         surveyCreateParameter.setOwnerId(surveyCreateParameterDto.getOwnerId());
         surveyCreateParameter.setTitle(surveyCreateParameterDto.getTitle());
 
-        surveyCreateParameter.getQuestions().addAll(surveyCreateParameterDto.getQuestions());
+        List<TypeOfQuestion> questions = new ArrayList<>();
+        for(int i = 0; i < surveyCreateParameterDto.getQuestions().size(); i++){
+            questions.add(TypeOfQuestionConverter.toEntity(surveyCreateParameterDto.getQuestions().get(i)));
+        }
+
+        surveyCreateParameter.getQuestions().addAll(questions);
 
         return surveyCreateParameter;
     }
@@ -31,7 +31,13 @@ public class SurveyConverter {
         surveyDto.setId(survey.getId());
         surveyDto.setOwner(UserConverter.toDto(survey.getOwner()));
         surveyDto.setTitle(survey.getTitle());
-        survey.getQuestions().addAll(surveyDto.getQuestions());
+
+        List<TypeOfQuestionDto> questionsDto = new ArrayList<>();
+        for(int i = 0; i < survey.getQuestions().size(); i++){
+            questionsDto.add(TypeOfQuestionConverter.toDto(survey.getQuestions().get(i)));
+        }
+        surveyDto.getQuestions().addAll(questionsDto);
+
         surveyDto.setCreationDate(survey.getCreationDate());
         surveyDto.setRespondentsCount(survey.getRespondentsCount());
 

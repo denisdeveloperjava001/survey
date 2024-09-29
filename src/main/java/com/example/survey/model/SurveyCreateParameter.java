@@ -1,5 +1,6 @@
 package com.example.survey.model;
 
+import com.example.survey.model.type_of_question.TypeOfQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,10 @@ public class SurveyCreateParameter {
 
     private String title;
 
-    private ArrayList<String> questions = new ArrayList<>();
+    private ArrayList<TypeOfQuestion> questions = new ArrayList<>();
+
+
+
+
+
 }

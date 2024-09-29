@@ -1,10 +1,12 @@
 package com.example.survey.controller;
 
 import com.example.survey.converter.SurveyConverter;
+import com.example.survey.converter.TypeOfQuestionConverter;
 import com.example.survey.converter.UserConverter;
 import com.example.survey.model.*;
 import com.example.survey.service.JWTService;
 import com.example.survey.service.SurveyService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -15,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 @RestController
 public class SurveyController {

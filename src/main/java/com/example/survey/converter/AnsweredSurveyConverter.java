@@ -10,7 +10,9 @@ public class AnsweredSurveyConverter {
         AnsweredSurveyCreateParameter answeredSurveyCreateParameter = new AnsweredSurveyCreateParameter();
         answeredSurveyCreateParameter.setSurveyId(answeredSurveyCreationParameterDto.getSurveyId());
         answeredSurveyCreateParameter.setUserId(answeredSurveyCreationParameterDto.getUserId());
-        answeredSurveyCreationParameterDto.getAnswers().addAll(answeredSurveyCreateParameter.getAnswers());
+        for(int i = 0; i<answeredSurveyCreationParameterDto.getAnswers().size(); i++){
+            answeredSurveyCreateParameter.getAnswers().add(TypeOfAnswerConverter.toEntity(answeredSurveyCreationParameterDto.getAnswers().get(i)));
+        }
         return answeredSurveyCreateParameter;
     }
 
@@ -19,7 +21,9 @@ public class AnsweredSurveyConverter {
         AnsweredSurveyDto answeredSurveyDto = new AnsweredSurveyDto();
         answeredSurveyDto.setUser(UserConverter.toDto(answeredSurvey.getUser()));
         answeredSurveyDto.setSurvey(SurveyConverter.toDto(answeredSurvey.getSurvey()));
-        answeredSurvey.getAnswers().addAll(answeredSurveyDto.getAnswers());
+        for(int i = 0; i < answeredSurvey.getAnswers().size(); i++){
+            answeredSurveyDto.getAnswers().add(TypeOfAnswerConverter.toDto(answeredSurvey.getAnswers().get(i)));
+        }
         return answeredSurveyDto;
     }
 }

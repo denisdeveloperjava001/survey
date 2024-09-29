@@ -5,6 +5,9 @@ import com.example.survey.converter.UserConverter;
 import com.example.survey.model.*;
 import com.example.survey.service.JWTService;
 import com.example.survey.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,22 +26,28 @@ public class UserController {
     @Autowired JWTService jwtService;
 
 
+
     @GetMapping("/user")
-    public UserDto getUser (@RequestParam UUID id){
+    public UserDto get (@RequestParam UUID id){
         User user = service.getUser(id);
         UserDto userDto = UserConverter.toDto(user);
         return userDto;
     }
 
+
     @DeleteMapping("/user")
-    public void deleteUser (@RequestHeader("Authorization") String token,@RequestParam UUID id){
+    public void delete (@RequestHeader("Authorization") String token,
+                            @RequestParam UUID id){
         jwtService.validationJWT(token, id);
 
         service.deleteUser(id);
     }
 
+
     @PutMapping("/user")
-    public UserDto updateUser (@RequestHeader("Authorization") String token, @RequestParam UUID id, @RequestBody UserUpdateParameterDto userUpdateParameterDto){
+    public UserDto update (@RequestHeader("Authorization") String token,
+                               @RequestParam UUID id,
+                               @RequestBody UserUpdateParameterDto userUpdateParameterDto){
         jwtService.validationJWT(token, id);
 
         UserUpdateParameter userUpdateParameter = UserConverter.toEntity(userUpdateParameterDto);
@@ -47,8 +56,9 @@ public class UserController {
         return userDto;
     }
 
+
     @GetMapping("/user/bySurvey")  // получаем всех юзеров по одному ответевшему опроснику
-    public Page<UserDto> getUsersByAnsweredSurvey (
+    public Page<UserDto> getByAnsweredSurvey (
             @RequestParam UUID surveyId,
             @RequestParam(defaultValue = "0") int pageNo,
             @RequestParam(defaultValue = "10") int pageSize) {

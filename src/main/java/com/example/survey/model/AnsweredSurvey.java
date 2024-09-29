@@ -1,5 +1,6 @@
 package com.example.survey.model;
 
+import com.example.survey.model.typy_of_answer.TypeOfAnswer;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -7,6 +8,7 @@ import org.hibernate.type.SqlTypes;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +33,7 @@ public class AnsweredSurvey {
 
     /** @noinspection JpaAttributeTypeInspection*/
     @JdbcTypeCode(SqlTypes.JSON)
-    private List<String> answers;
+    private List<TypeOfAnswer> answers = new ArrayList<>();
 
     @Setter
     @Getter

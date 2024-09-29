@@ -32,6 +32,11 @@ public class AnsweredSurveyService {
 
     public AnsweredSurvey saveAnsweredSurvey (AnsweredSurveyCreateParameter createParameter){
         validation.validateOnCreation(createParameter);
+        validation.validateOnType(createParameter);
+        validation.validateRequiredQuestion(createParameter);
+        validation.validateVariant(createParameter);
+
+
 
         User user = userJpaRepository.findById(createParameter.getUserId()).get();
         Survey survey = surveyJpaRepository.findById(createParameter.getSurveyId()).get();

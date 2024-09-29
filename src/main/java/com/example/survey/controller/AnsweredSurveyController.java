@@ -8,6 +8,7 @@ import com.example.survey.repository.AnsweredSurveyJpaRepository;
 import com.example.survey.service.AnsweredSurveyService;
 import com.example.survey.service.AnsweredSurveyService;
 import com.example.survey.service.JWTService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
