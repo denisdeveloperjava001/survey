@@ -1,16 +1,19 @@
 package com.example.survey.service;
 
-import com.example.survey.model.*;
-import com.example.survey.repository.*;
+import com.example.survey.model.AnsweredSurvey;
+import com.example.survey.model.User;
+import com.example.survey.model.UserUpdateParameter;
+import com.example.survey.repository.AnsweredSurveyJpaRepository;
+import com.example.survey.repository.UserJpaRepository;
 import com.example.survey.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,26 +23,20 @@ public class UserService {
     private UserJpaRepository userJpaRepository;
 
     @Autowired
-    private SurveyJpaRepository surveyJpaRepository;
-
-    @Autowired
     private AnsweredSurveyJpaRepository answeredSurveyJpaRepository;
 
     @Autowired
     private UserValidator userValidator;
 
-
-    public User getUser (UUID id){
-        User user = userJpaRepository.findById(id).get();
-        return user;
+    public User get(UUID id) {
+        return userJpaRepository.findById(id).get();
     }
 
-    public void deleteUser (UUID id){
+    public void delete(UUID id) {
         userJpaRepository.deleteById(id);
     }
 
-    public User updateUser (UUID id, UserUpdateParameter userUpdateParameter) {
-
+    public User update(UUID id, UserUpdateParameter userUpdateParameter) {
         userValidator.validateOnUpdate(id, userUpdateParameter);
 
         User user = userJpaRepository.findById(id).get();
@@ -55,13 +52,12 @@ public class UserService {
         return user;
     }
 
-    public Page<User> getUsersByAnsweredSurvey (UUID surveyId, int pageNo, int pageSize){ // получить всех юзеров ответивших на отпросник
+    public Page<User> getByAnsweredSurvey(UUID surveyId, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<AnsweredSurvey> answeredSurveys = answeredSurveyJpaRepository.findAllBySurveyId(surveyId,pageable);
+        Page<AnsweredSurvey> answeredSurveys = answeredSurveyJpaRepository.findAllBySurveyId(surveyId, pageable);
         List<User> users = answeredSurveys.stream().map(AnsweredSurvey::getUser).toList();
-        PageImpl<User> userPage = new PageImpl<>(users , pageable , answeredSurveys.getTotalElements());
 
-        return userPage;
+        return new PageImpl<>(users, pageable, answeredSurveys.getTotalElements());
     }
 
 }

@@ -1,6 +1,9 @@
 package com.example.survey.converter;
 
-import com.example.survey.model.*;
+import com.example.survey.model.User;
+import com.example.survey.model.UserDto;
+import com.example.survey.model.UserUpdateParameter;
+import com.example.survey.model.UserUpdateParameterDto;
 
 public class UserConverter {
 
@@ -15,8 +18,7 @@ public class UserConverter {
         return dto;
     }
 
-
-    public static UserUpdateParameter toEntity(UserUpdateParameterDto dto){
+    public static UserUpdateParameter toEntity(UserUpdateParameterDto dto) {
         UserUpdateParameter entity = new UserUpdateParameter();
         entity.setName(dto.getName());
         entity.setAge(dto.getAge());

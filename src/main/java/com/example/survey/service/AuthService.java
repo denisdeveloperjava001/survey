@@ -10,18 +10,17 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 
 @Service
-
 public class AuthService {
         @Autowired
-        UserValidator userValidator;
+        private UserValidator userValidator;
+
         @Autowired
-        UserJpaRepository userJpaRepository;
-        @Autowired JWTService jwtService;
+        private UserJpaRepository userJpaRepository;
 
+        @Autowired
+        private JWTService jwtService;
 
-
-
-        public RegistrationResponse registration (RegistrationParameter registrationParameter) {
+        public RegistrationResponse registration(RegistrationParameter registrationParameter) {
         userValidator.validateOnCreation(registrationParameter);
 
         User user = new User();
@@ -33,8 +32,9 @@ public class AuthService {
         user.setCreationDate(OffsetDateTime.now());
 
         userJpaRepository.save(user);
+
         UserDto userDto = UserConverter.toDto(user);
-        String jwt = jwtService.createJWT(userDto);
+        String jwt = jwtService.create(userDto);
 
         RegistrationResponse registrationResponse = new RegistrationResponse();
         registrationResponse.setUserDto(userDto);
@@ -43,24 +43,21 @@ public class AuthService {
         return registrationResponse;
     }
 
-        public SingInResponse signIn (SignInParameter signInParameter){
-
-        String mail = signInParameter.getMail();
-        String password = signInParameter.getPassword();
-        User user = userJpaRepository.findByMailAndPassword(mail,password);
+        public SingInResponse login(SignInParameter signInParameter) {
+        User user = userJpaRepository.findByMailAndPassword(signInParameter.getMail(), signInParameter.getPassword());
 
         if(user == null){
             throw  new RuntimeException("пользователь не найден");
         }
 
         UserDto userDto = UserConverter.toDto(user);
-        String jwt = jwtService.createJWT(userDto);
+        String jwt = jwtService.create(userDto);
 
         SingInResponse singInResponse = new SingInResponse();
         singInResponse.setUserDto(userDto);
         singInResponse.setToken(jwt);
 
         return singInResponse;
+    }
 
-        }
 }
