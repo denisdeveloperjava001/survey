@@ -11,7 +11,6 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class DateAnswerDto implements TypeOfAnswerDto{
+public class DateAnswerDto implements TypeOfAnswerDto {
     private Date date;
 }

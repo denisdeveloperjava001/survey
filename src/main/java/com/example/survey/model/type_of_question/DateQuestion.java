@@ -9,9 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class DateQuestion implements TypeOfQuestion {
     private String question;
     private boolean isRequired = false;
-
 }

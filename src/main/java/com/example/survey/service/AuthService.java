@@ -37,7 +37,7 @@ public class AuthService {
         String jwt = jwtService.create(userDto);
 
         RegistrationResponse registrationResponse = new RegistrationResponse();
-        registrationResponse.setUserDto(userDto);
+        registrationResponse.setUser(userDto);
         registrationResponse.setToken(jwt);
 
         return registrationResponse;
@@ -54,7 +54,7 @@ public class AuthService {
         String jwt = jwtService.create(userDto);
 
         SingInResponse singInResponse = new SingInResponse();
-        singInResponse.setUserDto(userDto);
+        singInResponse.setUser(userDto);
         singInResponse.setToken(jwt);
 
         return singInResponse;

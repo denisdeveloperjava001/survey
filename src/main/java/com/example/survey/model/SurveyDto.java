@@ -16,12 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SurveyDto {
-
     private UUID id;
     private UserDto owner;
     private String title;
     private List<TypeOfQuestionDto> questions = new ArrayList<>();
     private OffsetDateTime creationDate;
     private long respondentsCount;
-
 }

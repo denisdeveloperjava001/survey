@@ -13,9 +13,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class AnsweredSurveyCreationParameterDto {
-
     private UUID userId;
     private UUID surveyId;
     private List<TypeOfAnswerDto> answers = new ArrayList<>();

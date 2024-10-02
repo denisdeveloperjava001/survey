@@ -15,5 +15,4 @@ public class UserUpdateParameter {
     private String gender;
     private String mail;
     private String password;
-
 }

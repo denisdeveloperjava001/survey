@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class AnsweredSurveyDto {
     private UserDto user;
     private SurveyDto survey;

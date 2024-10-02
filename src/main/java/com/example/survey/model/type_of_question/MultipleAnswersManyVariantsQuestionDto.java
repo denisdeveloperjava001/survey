@@ -12,8 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class MultipleAnswersManyVariantsQuestionDto implements TypeOfQuestionDto{
+public class MultipleAnswersManyVariantsQuestionDto implements TypeOfQuestionDto {
     private String question;
     private List<String> variants = new ArrayList<>();
     private boolean isRequired = false;

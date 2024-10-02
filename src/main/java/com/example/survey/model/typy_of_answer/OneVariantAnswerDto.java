@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class OneVariantAnswerDto implements TypeOfAnswerDto {
     private String string;
 }

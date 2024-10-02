@@ -9,9 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class SingInResponse {
-    private UserDto userDto;
+    private UserDto user;
     private String token;
-
 }

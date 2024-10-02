@@ -9,10 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class StringQuestion implements TypeOfQuestion {
     private String question;
     private boolean isRequired = false;
-
-
 }

@@ -10,7 +10,9 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -34,10 +36,10 @@ public class Survey {
     @JdbcTypeCode(SqlTypes.JSON)
     private List<TypeOfQuestion> questions = new ArrayList<>();
 
+    @JoinColumn(name = "creation_date")
     private OffsetDateTime creationDate;
 
+    @JoinColumn(name = "respondents_count")
     private long respondentsCount;
-
-
 
 }

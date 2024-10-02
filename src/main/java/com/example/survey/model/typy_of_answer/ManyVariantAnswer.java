@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class ManyVariantAnswer implements TypeOfAnswer {
     private List<String> variants = new ArrayList<>();
 }

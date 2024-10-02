@@ -9,10 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class SignInParameter {
     private String mail;
     private String password;
-
-
 }

@@ -6,7 +6,7 @@ public class AuthConverter {
 
     public static RegistrationResponseDto toDto(RegistrationResponse registrationResponse) {
         RegistrationResponseDto registrationResponseDto = new RegistrationResponseDto();
-        registrationResponseDto.setUserDto(registrationResponse.getUserDto());
+        registrationResponseDto.setUser(registrationResponse.getUser());
         registrationResponseDto.setToken(registrationResponse.getToken());
 
         return registrationResponseDto;
@@ -33,7 +33,7 @@ public class AuthConverter {
 
     public static SingInResponseDto toDto (SingInResponse singInResponse) {
         SingInResponseDto singInResponseDto = new SingInResponseDto();
-        singInResponseDto.setUserDto(singInResponse.getUserDto());
+        singInResponseDto.setUser(singInResponse.getUser());
         singInResponseDto.setToken(singInResponse.getToken());
 
         return singInResponseDto;

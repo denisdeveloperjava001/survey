@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class StringQuestionDto implements TypeOfQuestionDto {
     private String question;
     private boolean isRequired = false;

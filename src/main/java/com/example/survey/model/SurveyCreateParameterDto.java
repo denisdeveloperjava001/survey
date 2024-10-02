@@ -14,10 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SurveyCreateParameterDto {
-
     private UUID ownerId;
-
     private String title;
-
     private ArrayList<TypeOfQuestionDto> questions;
 }

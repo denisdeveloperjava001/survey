@@ -1,10 +1,12 @@
 package com.example.survey.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Setter
@@ -25,6 +27,7 @@ public class User {
 
     private String gender;
 
+    @JoinColumn(name = "creation_date")
     private OffsetDateTime creationDate;
 
     private String mail;

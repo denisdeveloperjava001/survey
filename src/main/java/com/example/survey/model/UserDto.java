@@ -1,6 +1,5 @@
 package com.example.survey.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +13,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-
     private UUID id;
     private String name;
     private int age;
     private String gender;
     private OffsetDateTime creationDate;
     private String mail;
-
 }
