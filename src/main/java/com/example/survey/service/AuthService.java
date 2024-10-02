@@ -1,6 +1,7 @@
 package com.example.survey.service;
 
 import com.example.survey.converter.UserConverter;
+import com.example.survey.exception.UserNotFoundException;
 import com.example.survey.model.*;
 import com.example.survey.repository.UserJpaRepository;
 import com.example.survey.validation.UserValidator;
@@ -47,7 +48,7 @@ public class AuthService {
         User user = userJpaRepository.findByMailAndPassword(signInParameter.getMail(), signInParameter.getPassword());
 
         if(user == null){
-            throw  new RuntimeException("пользователь не найден");
+            throw new UserNotFoundException();
         }
 
         UserDto userDto = UserConverter.toDto(user);

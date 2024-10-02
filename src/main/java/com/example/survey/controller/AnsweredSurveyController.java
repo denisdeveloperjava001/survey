@@ -35,7 +35,7 @@ public class AnsweredSurveyController {
     @GetMapping
     public AnsweredSurveyDto get(@RequestParam UUID userId,
                                                @RequestParam UUID surveyId) {
-        AnsweredSurvey answeredSurvey = service.get(userId, surveyId);
+        AnsweredSurvey answeredSurvey = service.getOrThrow(userId, surveyId);
         return AnsweredSurveyConverter.toDto(answeredSurvey);
     }
 

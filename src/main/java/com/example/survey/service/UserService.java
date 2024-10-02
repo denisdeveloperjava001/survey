@@ -1,5 +1,6 @@
 package com.example.survey.service;
 
+import com.example.survey.exception.UserNotFoundException;
 import com.example.survey.model.AnsweredSurvey;
 import com.example.survey.model.User;
 import com.example.survey.model.UserUpdateParameter;
@@ -28,8 +29,8 @@ public class UserService {
     @Autowired
     private UserValidator userValidator;
 
-    public User get(UUID id) {
-        return userJpaRepository.findById(id).get();
+    public User getOrThrow(UUID id) {
+        return userJpaRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public void delete(UUID id) {
@@ -39,7 +40,7 @@ public class UserService {
     public User update(UUID id, UserUpdateParameter userUpdateParameter) {
         userValidator.validateOnUpdate(id, userUpdateParameter);
 
-        User user = userJpaRepository.findById(id).get();
+        User user = getOrThrow(id);
 
         user.setName(userUpdateParameter.getName());
         user.setAge(userUpdateParameter.getAge());

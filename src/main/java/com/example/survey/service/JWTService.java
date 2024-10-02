@@ -1,5 +1,6 @@
 package com.example.survey.service;
 
+import com.example.survey.exception.InvalidTokenException;
 import com.example.survey.model.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -46,7 +47,7 @@ public class JWTService {
                 .after(new Date());
 
         if(!isValidUser || !isActive) {
-            throw new RuntimeException("ошибка авторизации");
+            throw new InvalidTokenException();
         }
     }
 

@@ -1,5 +1,9 @@
 package com.example.survey.validation;
 
+import com.example.survey.exception.UserExistingEmailException;
+import com.example.survey.exception.UserInvalidAgeException;
+import com.example.survey.exception.UserInvalidEmailException;
+import com.example.survey.exception.UserInvalidPasswordException;
 import com.example.survey.model.RegistrationParameter;
 import com.example.survey.model.UserUpdateParameter;
 import com.example.survey.repository.UserJpaRepository;
@@ -32,7 +36,7 @@ public class UserValidator {
 
     private void validateAge(int age) {
         if (age < 10 || age > 100) {
-            throw new RuntimeException("не соответствует диапазону допустимого возраста");
+            throw new UserInvalidAgeException();
         }
     }
 
@@ -43,7 +47,7 @@ public class UserValidator {
         Matcher matcher = pattern.matcher(mail);
 
         if(!matcher.matches()) {
-            throw new RuntimeException("емэйл не соответствует требованиям");
+            throw new UserInvalidEmailException();
         }
     }
 
@@ -53,20 +57,19 @@ public class UserValidator {
         Matcher matcher = pattern.matcher(password);
 
         if(!matcher.matches()) {
-            throw new RuntimeException("пароль не соответствует требованиям, наличие хотя бы одной строчной буквы," +
-                    "наличие хотя бы одной заглавной буквы, от 8 до 20 символов" );
+            throw new UserInvalidPasswordException();
         }
     }
 
     private void validateEmailExistence(String mail) {
         if(userJpaRepository.existsByMail(mail)){
-            throw new RuntimeException("пользователь с такой почтой уже существует");
+            throw new UserExistingEmailException();
         }
     }
 
     private void validateEmailExistence(UUID userId, String mail) {
         if(userJpaRepository.existsByMailAndIdNot(mail, userId)){
-            throw new RuntimeException("пользователь с такой почтой уже существует");
+            throw new UserExistingEmailException();
         }
     }
 

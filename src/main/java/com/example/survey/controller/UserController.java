@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping
     public UserDto get(@RequestParam UUID id) {
-        User user = service.get(id);
+        User user = service.getOrThrow(id);
         return UserConverter.toDto(user);
     }
 

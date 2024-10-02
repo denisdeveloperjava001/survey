@@ -1,10 +1,10 @@
 package com.example.survey.service;
 
+import com.example.survey.exception.SurveyNotFoundException;
 import com.example.survey.model.Survey;
 import com.example.survey.model.SurveyCreateParameter;
 import com.example.survey.model.User;
 import com.example.survey.repository.SurveyJpaRepository;
-import com.example.survey.repository.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,11 +22,11 @@ public class SurveyService {
     private SurveyJpaRepository surveyJpaRepository;
 
     @Autowired
-    private UserJpaRepository userJpaRepository;
+    private UserService userService;
 
     public Survey save(SurveyCreateParameter surveyCreateParameter) {
         Survey survey = new Survey();
-        survey.setOwner(userJpaRepository.findById(surveyCreateParameter.getOwnerId()).get());
+        survey.setOwner(userService.getOrThrow(surveyCreateParameter.getOwnerId()));
         survey.setTitle(surveyCreateParameter.getTitle());
         survey.setQuestions(surveyCreateParameter.getQuestions());
         survey.setCreationDate(OffsetDateTime.now());
@@ -36,8 +36,8 @@ public class SurveyService {
         return survey;
     }
 
-    public Survey get(UUID id) {
-        return surveyJpaRepository.findById(id).orElse(null);
+    public Survey getOrThrow(UUID id) {
+        return surveyJpaRepository.findById(id).orElseThrow(SurveyNotFoundException::new);
     }
 
      public void delete(UUID id) {

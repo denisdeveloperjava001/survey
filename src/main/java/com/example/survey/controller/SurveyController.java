@@ -30,7 +30,7 @@ public class SurveyController {
 
     @GetMapping
     public SurveyDto get(@RequestParam UUID id) {
-        Survey survey = service.get(id);
+        Survey survey = service.getOrThrow(id);
         return SurveyConverter.toDto(survey);
     }
 

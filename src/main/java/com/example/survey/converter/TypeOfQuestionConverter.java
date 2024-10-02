@@ -1,5 +1,6 @@
 package com.example.survey.converter;
 
+import com.example.survey.exception.UnknownTypeException;
 import com.example.survey.model.type_of_question.*;
 
 public class TypeOfQuestionConverter {
@@ -34,7 +35,7 @@ public class TypeOfQuestionConverter {
            multipleAnswersManyVariantsQuestion.setRequired(multipleAnswersManyVariantsQuestionDto.isRequired());
            return multipleAnswersManyVariantsQuestion;
        }
-       throw new RuntimeException("Невозможно конвертировать,неизвестный тип");
+        throw new UnknownTypeException();
     }
 
     public static TypeOfQuestionDto toDto(TypeOfQuestion typeOfQuestion) {
@@ -68,7 +69,7 @@ public class TypeOfQuestionConverter {
             return multipleAnswersManyVariantsQuestionDto;
         }
 
-        throw new RuntimeException("Невозможно конвертировать,неизвестный тип");
+        throw new UnknownTypeException();
     }
 
 }
